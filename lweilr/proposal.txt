@@ -1,0 +1,39 @@
+1. UTM Name: EL_UTM
+
+2. Partners: Ellie Ko, Laura Weiler
+
+3. Debugging: we will implement the following two suggestions from Prof. Stump-
+	a) a function which is like accepts (in TM.hs) except that it takes in an input and a number n, 
+           and returns the list of configurations reached after n calls to newConfigs.
+	b) a function which is like accepts but returns the final configuration, rather than just accepting.
+
+4. Rough algorithm: 
+	we will change the encoding provided by Prof. Stump to include blank tape cells immediately before each 
+        encoded character of the input string on the tape. this will allow us to keep track of the current state by
+        writing it into the blank tape cell next to where the tapehead is processing a character in the input string
+	(as suggested in lecture). this will help us track both the current state and the tapehead as we process the string.
+
+        our algorithm will go as follows:
+	
+	Initialize:
+	  advance the UTM tapehead until the first blank cell in the encoded input string is reached 
+	   (we can count '#' symbols to find the input string section of the tape). 
+	   if the end of tape is found instead, check if the current state is an accepting state by checking 
+	   if it is in the set of final states. (this is a case for the empty string)
+	   if it is found, enter accepting state and exit. if it is not found, continue.
+	Loop:
+	  write the current state to the current tape cell. 
+	   check if the current state is an accepting state by checking if it is in the set of final states. 
+	   if it is found, enter accepting state and exit. if it is not found, continue.
+	  compare the current state and adjacent character cells bit by bit against transition function entries to
+           try to find a match.
+	   as we go back and forth between the transition function and encoded input string, we will keep track of 
+	   the bit we are currently processing by rewriting the current bit as 'a' if it is 0, or 'b' if it is 1
+	   (also as suggested in lecture).
+	   if no transition function is found, reject the string.
+	   if a transition function is found, then update the current encoded character in the input string (g to g').
+	  move the tape-head according to the action in the transition function (goLeft, etc..), scrupulously tracking number of '.'
+	   to be sure we end with the tapehead pointing to either a blank, or a cell that was previously a blank 
+	   (i.e., not a cell with a g value). 
+        
+5. Preferred presentation date: Tuesday, December 7th (we would also be happy with Thursday)
