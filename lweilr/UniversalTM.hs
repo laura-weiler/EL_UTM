@@ -55,7 +55,7 @@ list :: UEncode a => [a] -> String -> String
 list xs rest = foldrGlue comma xs ('#' : rest)
 
 bitencSep2 :: UEncode a => Char -> a -> String -> String
-bitencSep2 u x rest = u: bitenc x ++ (',':rest)
+bitencSep2 u x rest = bitenc u ++bitenc x ++ (',':rest)
 -- bitencSep2 u x rest = u : bitenc x ++ rest
 
 blanks :: UEncode a => a -> String -> String
