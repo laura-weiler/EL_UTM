@@ -19,3 +19,7 @@ tripletm =
             loopLeft 5 "abc*" ++
             goRight 5 '!' '!' 1 
 
+el_utm =
+  TM [1 .. 6] "01!?,#." "01!?,#." id ' ' '?' trans 1 [6]
+  where
+    trans = goRight 1 ' ' ' ' 6
