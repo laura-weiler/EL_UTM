@@ -56,6 +56,28 @@ initialConfig tm xs =
 accepts :: (Eq state, Eq tape) => TM input state tape -> [input] -> Bool
 accepts tm xs = acceptsh tm [initialConfig tm xs]
 
+
+-- [new debugging tools a and b from our proposal]
+
+-- a)
+acceptsh2 :: (Eq state, Eq tape) => TM input state tape -> [Config state tape] -> Maybe (Config state tape)
+acceptsh2 tm [] = Nothing
+acceptsh2 tm (c@(Config st _ _ _) : cs) =
+  if elem st (final tm) then Just c
+  else
+    acceptsh2 tm (cs ++ newConfigs tm c)
+accepts2 :: (Eq state, Eq tape) => TM input state tape -> [input] -> Maybe (Config state tape)
+accepts2 tm xs = case acceptsh2 tm [initialConfig tm xs] of
+  Nothing -> Nothing
+  Just x -> Just x
+
+-- b)
+nthChecking :: (Eq state, Eq tape) => TM input state tape -> [input] -> Int -> Config state tape
+nthChecking tm xs 1  = initialConfig tm xs
+nthChecking tm xs n  = head $ newConfigs tm (nthChecking tm xs (n-1))
+
+
+
 epsEdge :: state -> state -> state -> [tape] -> [Trans state tape]
 epsEdge p intermediate q ts =
   concat (do
