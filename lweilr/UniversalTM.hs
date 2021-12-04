@@ -3,6 +3,8 @@ module UniversalTM where
 import TM
 import Util
 import Data.Char
+import Data.List
+import Data.Ord
 
 utape :: String
 utape = ['0','1','#',',','.']
@@ -61,10 +63,6 @@ list xs rest = foldrGlue comma xs ('#' : rest)
 blanks :: UEncode a => a -> String -> String
 blanks = bitencSep2 ' '
 
-list2 :: UEncode a => [a] -> String -> String
-list2 xs rest = foldrGlue blanks xs ('#' : rest)
-
-
 encodeh :: (UEncode input, UEncode state, UEncode tape) =>
           TM input state tape ->
           String {- string to follow this one -} ->
@@ -75,8 +73,12 @@ encodeh (TM states inputs tapesyms _ blank leftend trans start final) rest =
   pound start $
   list final $
   list trans $
-  pound leftend rest
- 
+  pound leftend rest''
+    where maxbinlen = length (maximumBy (comparing length) [bitenc s | s <- states])
+          zeros     = ['@' | _ <- [0..maxbinlen]] 
+          rest'     = concatMap (\c -> if c == ',' then "," ++ zeros else [c]) rest
+          rest''    = zeros ++ take (length rest' - (maxbinlen+2)) rest' ++ "#"
+
 encode :: (UEncode input, UEncode state, UEncode tape) =>
           TM input state tape ->
           String -- over Utape
@@ -85,5 +87,5 @@ encode tm = encodeh tm ""
 -- turn a TM and an input string into a single input for the universal TM
 inputU :: (UEncode input, UEncode state, UEncode tape) =>
           TM input state tape -> [input] -> String -- over Utape
-inputU tm xs = encodeh tm (list2 xs "")
+inputU tm xs = encodeh tm (list xs "")
 
