@@ -1,0 +1,15 @@
+First of all, we changed our encoding. Our new tape is "start#end#transitions#leftend#modified_input" where modified_input is '@'*(maximum lenght of states) + each input character.
+Also, we implemented two debugging tools that we proposed. "accepts2" in TM.hs returns its final configuration if a given input is accepted or Nothing. "nthChecking" in TM.hs returns nth configuration. The example usages of the tools are as below. We are working on changing this output to be decoded to make them useful in debugging our UTM. (looking at tape written in 1,0, ... seems frustrating)
+We also started making transition functions for our UTM.
+
+
+[example usages of debugging tools]
+
+*TMExamples> accepts2 tripletm "abc"
+Just [6: "!***  " ""]
+*TMExamples> nthChecking tripletm "abc" 1
+[1: "!a" "bc"]
+*TMExamples> nthChecking tripletm "abc" 2
+[2: "!*b" "c"]
+*TMExamples> nthChecking tripletm "abc" 12
+[1: "!*** " ""]
