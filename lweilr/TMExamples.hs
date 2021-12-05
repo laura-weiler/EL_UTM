@@ -24,15 +24,17 @@ el_utm =
   where
     trans = goRight 0 '?' '?' 1 ++
             ---- BEGIN WRITING THE START STATE TO THE LEFT OF THE FIRST INPUT BIT
-            goRight 1 '0' 'a' 2 ++ -- case where encoded input state starts with 0
-            goRight 1 '1' 'b' 3 ++ -- case where encoded input state starts with 1
-            goRight 1 '#' '#' 25 ++
-            loopRight 2 "01,.#" ++ -- loop over everything to the start of the input string
-            loopRight 3 "01,.#" ++
-            goRight 2 '@' '0' 4 ++ -- mark that we are processing the first placeholder character
-            goRight 3 '@' '1' 4 ++
-            loopLeft 4 "01,.a#" ++ -- go back to the beginning of the tape
+            goRight 1 '0' 'a' 2 ++  -- case where encoded input state starts with 0
+            goRight 1 '1' 'b' 3 ++  -- case where encoded input state starts with 1
+            goRight 1 '#' '#' 25 ++ -- finished processing input state, go to final state 
+                                    -- (just for now, until we write the other peices of the algorithm)
+            loopRight 2 "01,.#" ++  -- loop over everything to the start of the input string (from path a)
+            loopRight 3 "01,.#" ++  -- loop over everything to the start of the input string (from path b)
+            goRight 2 '@' '0' 4 ++  -- write the first bit of the start state (from path a)
+            goRight 3 '@' '1' 4 ++  -- write the first bit of the start state (from path b)
+            loopLeft 4 "01,.a#" ++  -- go back to the beginning of the tape
             goRight 4 '?' '?' 5 ++
-            loopRight 5 "01" ++    -- find the bit we are currently processing
-            goRight 5 'a' '0' 1 ++
-            goRight 5 'b' '1' 1
+            loopRight 5 "01" ++     -- loop over any bits in the start state that we have already processed
+            goRight 5 'a' '0' 1 ++  -- found a placeholder, we have written this bit already so put it back to 0
+            goRight 5 'b' '1' 1     -- "" so put it back to 1
+            ---- END WRITING THE START STATE TO THE LEFT OF THE FIRST INPUT BIT

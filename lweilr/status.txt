@@ -1,9 +1,10 @@
-First of all, we changed our encoding. Our new tape is "start#end#transitions#leftend#modified_input" where modified_input is '@'*(maximum lenght of states) + each input character.
-Also, we implemented two debugging tools that we proposed. "accepts2" in TM.hs returns its final configuration if a given input is accepted or Nothing. "nthChecking" in TM.hs returns nth configuration. The example usages of the tools are as below. We are working on changing this output to be decoded to make them useful in debugging our UTM. (looking at tape written in 1,0, ... seems frustrating)
-We also started making transition functions for our UTM.
+First of all, we changed our encoding. Our new tape is "leftend(UTM) startstate # [final states] # [transitions] # leftend(TM) # modified_input" where modified_input is '@'*(length of largest state) followed by a dot, input character, and a comma, then  repeat for each other input character. We have added the sequence of '@' symbols in front of each input character as space for writing the current state. This will help facilitate checking the input against the transition functions later. The other encoding change we made was to move the encoded TM's leftend symbol to immediately before the encoded input to facilitate checking against transition functions.
+Also, we implemented the two debugging tools that we said we would implement in our proposal. "accepts2" in TM.hs returns a TMs final configuration if a given input is accepted, or Nothing if the input is not accepted. "nthChecking" in TM.hs returns the TM's nth configuration. The example usages of the tools are as below. We are working on adding an option to print the configuration unencoded to make it more human readable for debugging our UTM. (looking at tape written in 1,0, ... seems frustrating)
+We also wrote our first set of transition functions. We have written a block of transitions for writing the start state to the first set of '@' symbols in the part of the tape for the encoded input string so that we can begin checking transition functions. Our plan is to wrap this set of transitions into its own function which can be called from the main transition function. We will proceed similarly with the UTM's transitions for checking the encoded TM's transition functions, etc. 
+We have included a diagram for our first set of transition functions.
 
 
-[example usages of debugging tools]
+[example usages of debugging tools using tripletm]
 
 *TMExamples> accepts2 tripletm "abc"
 Just [6: "!***  " ""]

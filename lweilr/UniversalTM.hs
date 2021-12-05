@@ -46,7 +46,6 @@ instance (UEncode state, UEncode tape) => UEncode (Trans state tape) where
 bitencSep :: UEncode a => Char -> a -> String -> String
 bitencSep u x rest = bitenc x ++ (u:rest)
 
--- Add blank(000001) and period before each input character 
 bitencSep2 :: UEncode a => Char -> a -> String -> String
 bitencSep2 u x rest = bitenc u ++ "." ++ bitenc x ++ (',':rest)
 
