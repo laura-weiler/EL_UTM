@@ -32,7 +32,7 @@ el_utm =
             loopRight 3 "01,.#" ++  -- loop over everything to the start of the input string (from path b)
             goRight 2 '@' '0' 4 ++  -- write the first bit of the start state (from path a)
             goRight 3 '@' '1' 4 ++  -- write the first bit of the start state (from path b)
-            loopLeft 4 "01,.a#" ++  -- go back to the beginning of the tape
+            loopLeft 4 "01,.@ba#" ++  -- go back to the beginning of the tape
             goRight 4 '?' '?' 5 ++
             loopRight 5 "01" ++     -- loop over any bits in the start state that we have already processed
             goRight 5 'a' '0' 1 ++  -- found a placeholder, we have written this bit already so put it back to 0
