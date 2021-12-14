@@ -23,9 +23,13 @@ data TM input state tape = TM {
 
 data Config state tape = Config state tape {- the blank -} [tape] [tape]
 
+--instance (Show state, Show tape, Eq tape) => Show (Config state tape) where
+--  show (Config st blank leftrev right) =
+--    "[" ++ show st ++ ": " ++ (show $ reverse leftrev) ++ " " ++ (show $ takeWhile (/= blank) right) ++ "]"
+
 instance (Show state, Show tape, Eq tape) => Show (Config state tape) where
   show (Config st blank leftrev right) =
-    "[" ++ show st ++ ": " ++ (show $ reverse leftrev) ++ " " ++ (show $ takeWhile (/= blank) right) ++ "]"
+    "[" ++ show st ++ ": " ++ (show $ reverse leftrev) ++ "\n" ++ (show $ takeWhile (/= blank) right) ++ "]"
 
 shiftConfig :: Config state tape -> Direction -> Config state tape
 shiftConfig (Config st blank leftrev (r:right)) GoRight = Config st blank (r:leftrev) right
