@@ -74,7 +74,7 @@ encodeh (TM states inputs tapesyms _ blank leftend trans start final) rest =
   list trans $
   pound leftend rest''
     where maxbinlen = length (maximumBy (comparing length) [bitenc s | s <- states])
-          zeros     = ['@' | _ <- [1..maxbinlen]] 
+          zeros     = ['@' | _ <- [1..maxbinlen]] ++ "." 
           rest'     = concatMap (\c -> if c == ',' then "," ++ zeros else [c]) rest
           rest''    = zeros ++ take (length rest' - (maxbinlen+2)) rest' ++ "#"
 
