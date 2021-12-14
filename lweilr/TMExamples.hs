@@ -99,7 +99,19 @@ el_utm =
             goRight 27 '@' '@' 28 ++ -- current state in input part of tape is also done, now can move on to input character
             loopRight 28 "@" ++
             goRight 28 '0' 'a' 29 ++
-            goRight 30 '1' 'b' 31
+
+            -- if state doesn't match in state matching
+            goRight 18 'b' 'b' 30 ++
+            loopLeft 30 "01,.#" ++
+            goLeft 30 'a' '0' 31 ++
+            loopRight 31 "01." ++
+            goRight 31 ',' ',' 17 ++
+
+            goRight 20 'a' 'a' 32 ++
+            loopLeft 32 "01,.#" ++
+            goLeft 32 'b' '1' 33 ++
+            loopRight 33 "01." ++
+            goRight 33 ',' ',' 17    
 
 
 
