@@ -68,8 +68,45 @@ el_utm =
             loopLeft 12 "01,.@#" ++
             goRight 12 'a' '0' 6 ++
             goRight 12 'b' '1' 6 ++
-            goRight 12 ',' ',' 100  -- final state matches current state
+            goRight 12 ',' ',' 100  ++ -- final state matches current state
             ---- END CHECK FINAL STATES
 
             ---- BEGIN FIND TRANSITION FUNCTION
+            -- currently at beginning of transition functions, move forward to current state
+            loopLeft 16 "ab,.01@" ++
+            goRight 16 '#' '#' 17 ++    
+            goRight 17 '0' 'a' 18 ++
+            goRight 17 '1' 'b' 20 ++
+            loopRight 18 "01,.@#" ++
+            loopRight 20 "01,.@#" ++
+            goRight 18 'a' 'a' 21 ++
+            goRight 20 'b' 'b' 22 ++ -- found a match
+            -- now go back
+            loopLeft 21 "01,.@ab" ++
+            loopLeft 22 "01,.@ab" ++
+            goLeft 21 '#' '#' 23 ++
+            goLeft 22 '#' '#' 24 ++
+            loopLeft 23 "01,.@#" ++
+            loopLeft 24 "01,.@#" ++
+            goRight 23 'a' '0' 17 ++
+            goRight 24 'b' '1' 17 ++ -- case for more state bits to process
+            goRight 23 '.' '.' 25 ++
+            goRight 24 '.' '.' 25 ++ -- in this case, no more state bits to process, make sure this is also true of transition function
+            goRight 25 '0' 'a' 26 ++
+            goRight 25 '1' 'b' 26 ++ -- mark first bit of input char in transition function
+            loopRight 26 "01,.#" ++
+            goRight 26 'a' 'a' 27 ++
+            goRight 26 'b' 'b' 27 ++
+            goRight 27 '@' '@' 28 ++ -- current state in input part of tape is also done, now can move on to input character
+            loopRight 28 "@" ++
+            goRight 28 '0' 'a' 29 ++
+            goRight 30 '1' 'b' 31
+
+
+
+
+
+
+
+
             ---- END FIND TRANSITION FUNCTION
