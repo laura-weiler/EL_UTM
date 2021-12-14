@@ -143,10 +143,44 @@ el_utm =
             goLeft 35 '#' '#' 36 ++
             loopLeft 36 "01,.#" ++
             goRight 36 'a' '0' 28 ++
-            goRight 36 'b' '1' 28
+            goRight 36 'b' '1' 28 ++
             ---- END CHECK INPUT CHARACTER
 
+            ---- BEGIN WRITE NEW CHARACTER TO TAPE
+            loopRight 42 "01" ++ -- skip over goLeft, goRight instruction for now
+            goRight 42 '.' '.' 43 ++
+            loopRight 43 "01" ++ -- skip over new state for now
+            goRight 43 '.' '.' 44 ++ -- now at the beginning of the character to be written
+            -- begin write character subroutine
+            goRight 44 '0' 'a' 45 ++
+            goRight 44 '1' 'b' 47 ++ -- mark character to be written
+            goRight 44 '.' '.' 54 ++ -- done writing input, move on to next part 
+            loopRight 45 "01.,#" ++
+            loopRight 47 "01.,#" ++
+            goRight 45 'a' 'a' 48 ++
+            goRight 45 'b' 'b' 48 ++
+            goRight 47 'a' 'a' 49 ++
+            goRight 47 'b' 'b' 49 ++
+            loopRight 48 "ab@." ++
+            loopRight 49 "ab@." ++
+            goRight 50 '0' 'a' 52 ++
+            goRight 50 '1' 'a' 52 ++
+            goRight 51 '0' 'b' 52 ++
+            goRight 51 '1' 'b' 52 ++
+            loopLeft 52 "ab@.01" ++
+            goLeft 52 '#' '#' 53 ++
+            loopLeft 53 "01#,." ++
+            goLeft 53 'a' '0' 44 ++ 
+            goLeft 53 'b' '1' 44
 
+           
+
+
+
+
+
+            -- end write character subroutine
+            ---- END WRITE NEW CHARACTER TO TAPE
 
 
 
