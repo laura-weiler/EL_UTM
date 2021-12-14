@@ -77,6 +77,7 @@ el_utm =
             goRight 16 '#' '#' 17 ++    
             goRight 17 '0' 'a' 18 ++
             goRight 17 '1' 'b' 20 ++
+            goRight 17 '.' '.' 25 ++
             loopRight 18 "01,.@#" ++
             loopRight 20 "01,.@#" ++
             goRight 18 'a' 'a' 21 ++
@@ -90,8 +91,6 @@ el_utm =
             loopLeft 24 "01,.@#" ++
             goRight 23 'a' '0' 17 ++
             goRight 24 'b' '1' 17 ++ -- case for more state bits to process
-            goRight 23 '.' '.' 25 ++
-            goRight 24 '.' '.' 25 ++ -- in this case, no more state bits to process, make sure this is also true of transition function
             goRight 25 '0' 'a' 26 ++
             goRight 25 '1' 'b' 26 ++ -- mark first bit of input char in transition function
             loopRight 26 "01,.#" ++
