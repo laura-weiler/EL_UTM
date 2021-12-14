@@ -106,7 +106,7 @@ el_utm =
             ---- BEGIN CHECK INPUT CHARACTER
             goRight 28 '0' 'a' 29 ++
             goRight 28 '1' 'b' 30 ++
-            goRight 28 '.' '.' 100 ++ -- end of input character
+            goRight 28 '.' '.' 42 ++ -- end of input character, go to next part of the algorithm
             loopRight 29 "01,.#" ++
             loopRight 30 "01,.#" ++
             goRight 29 'a' 'a' 31 ++
@@ -144,11 +144,6 @@ el_utm =
             loopLeft 36 "01,.#" ++
             goRight 36 'a' '0' 28 ++
             goRight 36 'b' '1' 28
-
-
-
-
-
             ---- END CHECK INPUT CHARACTER
 
 
