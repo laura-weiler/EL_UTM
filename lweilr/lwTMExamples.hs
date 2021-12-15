@@ -5,7 +5,7 @@ import UniversalTM
 
 -- following suggestion by Junnan in class
 tripletm =
-  TM [1 .. 6] "abc" "abc*! " id ' ' '!' trans 6 [5, 6, 1]
+  TM [1 .. 6] "abc" "abc*! " id ' ' '!' trans 6 [3, 4]
   where
     trans = goRight 1 ' ' ' ' 6 ++
             loopRight 1 "*" ++
@@ -51,7 +51,7 @@ el_utm =
             -- on the way, go ahead and mark the first bit of the first final state
             goRight 6 '0' 'a' 11 ++
             goRight 6 '1' 'b' 12 ++
-            goRight 6 '#' '#' 19 ++ -- move on to next algorithm
+            goRight 6 '#' '#' 110 ++ -- move on to next algorithm
             loopRight 11 "01cd,.#" ++
             loopRight 12 "01cd,.#" ++
             goRight 11 '@' '@' 100 ++
@@ -70,6 +70,8 @@ el_utm =
 
 
             -- when it saw not correct bit
+            -- go to the sink so that it can continue putting the bit back to the final state
+            -- and continue checking if there is more final states
             goRight 102 'b' 'b' 15 ++
             goRight 103 'a' 'a' 15 ++
 
@@ -92,8 +94,31 @@ el_utm =
             loopLeft 18 "01,.@#" ++
             goRight 18 'a' '0' 6 ++
             goRight 18 'b' '1' 6 ++
-            goRight 18 ',' ',' 1000  -- final state matches current state
+            goRight 18 ',' ',' 1000 ++ -- final state matches current state
             ---- END CHECK FINAL STATES
+
+            -- putting back c,d to a,b
+            loopRight 110 "01,.@#" ++
+            goRight 110 'c' 'a' 111 ++
+            goRight 110 'd' 'b' 111 ++
+            goRight 110 'a' 'a' 111 ++
+            goRight 110 'b' 'b' 111 ++
+            --loopLeft 111 "ab" ++
+            --goRight 111 ',' ',' 120 ++
+            loopRight 111 "ab" ++
+            goRight 111 'c' 'a' 111 ++
+            goRight 111 'd' 'b' 111 ++
+            
+         
+            goRight 111 '.' '.' 121 ++
+            loopLeft 121 "01,.@#ab" ++
+            goRight 121 '?' '?' 123 ++
+            loopRight 123 "01," ++
+            goRight 123 '#' '#' 122 ++
+            loopRight 122 "01," ++
+            goRight 122 '#' '#' 19
+            
+            -- goRight 110 '#' '#' 19 ++
 
 {-
             ---- BEGIN CHECK TRANSITION STATE
