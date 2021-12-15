@@ -271,8 +271,8 @@ el_utm =
             loopLeft 224 "01#,." ++ 
 
             -- finished updating the character, go back to the goLeft, goRight instruction
-            goLeft 224 'a' 'a' 225 ++ -- HERE !#!R# should this be 'a' '0' or 'a' 'a' ?
-            goLeft 224 'b' 'b' 226 ++ -- HERE !FWE!;LFM2
+            goRight 224 'a' 'a' 225 ++ -- HERE !#!R# should this be 'a' '0' or 'a' 'a' ?
+            goRight 224 'b' 'b' 226 ++ -- HERE !FWE!;LFM2
             loopRight 225 "01,.@_" ++ --path for goRight
             loopRight 226 "01,.@_" ++ --path for goLeft
             goRight 225 '#' '#' 227 ++
