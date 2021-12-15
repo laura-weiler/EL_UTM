@@ -71,7 +71,7 @@ el_utm =
             -- else, go back and check next state
             goRight 11 'b' 'b' 15 ++
             goRight 12 'a' 'a' 15 ++
-            loopLeft 15 "01,.@ab#" ++ -- go back to beginning of tape
+            loopLeft 15 "01,.@abcd#" ++ -- go back to beginning of tape
             goRight 15 '?' '?' 16 ++
             loopRight 16 "01,.@#" ++
             goRight 16 'a' '0' 17 ++
@@ -88,6 +88,8 @@ el_utm =
             goRight 18 'b' '1' 6 ++
             goRight 18 ',' ',' 1000  -- final state matches current state
             ---- END CHECK FINAL STATES
+
+
 {-
             ---- BEGIN CHECK TRANSITION STATE
             -- currently at beginning of transition functions, move forward to current state
