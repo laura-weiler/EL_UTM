@@ -5,7 +5,7 @@ import UniversalTM
 
 -- following suggestion by Junnan in class
 tripletm =
-  TM [1 .. 6] "abc" "abc*! " id ' ' '!' trans 6 [3, 4]
+  TM [1 .. 6] "abc" "abc*! " id ' ' '!' trans 1 [6]
   where
     trans = goRight 1 ' ' ' ' 6 ++
             loopRight 1 "*" ++
@@ -109,18 +109,16 @@ el_utm =
             goRight 111 'c' 'a' 111 ++
             goRight 111 'd' 'b' 111 ++
             
-         
+            goRight 111 '@' '@' 121 ++ 
             goRight 111 '.' '.' 121 ++
             loopLeft 121 "01,.@#ab" ++
             goRight 121 '?' '?' 123 ++
             loopRight 123 "01," ++
             goRight 123 '#' '#' 122 ++
             loopRight 122 "01," ++
-            goRight 122 '#' '#' 19
+            goRight 122 '#' '#' 19 ++
             
-            -- goRight 110 '#' '#' 19 ++
 
-{-
             ---- BEGIN CHECK TRANSITION STATE
             -- currently at beginning of transition functions, move forward to current state
             loopLeft 19 "ab,.01@" ++ -- looping left to be lazy, because it ended after first bit of the trans functions
@@ -152,27 +150,26 @@ el_utm =
             goRight 29 'a' '0' 20 ++
             goRight 30 'b' '1' 20 ++ -- case for more state bits to process
             ---- END CHECK TRANSITION STATE
-
-
+            
             ---- BEGIN CHECK INPUT CHARACTER
             goRight 31 '0' 'a' 32 ++
             goRight 31 '1' 'b' 32 ++
             -- go mark the transition function bit
-            loopRight 32 "01,.#" ++
+            loopRight 32 "01,.#@" ++
             goRight 32 'a' 'a' 33 ++
             goRight 32 'b' 'b' 33 ++
             loopRight 33 "@ab" ++
             goRight 33 '.' '.' 34 ++
             goRight 34 '0' 'a' 35 ++
             goRight 34 '1' 'b' 35 ++
-            loopLeft 35 "ab.01," ++
+            loopLeft 35 "ab.01@," ++
             goLeft 35 '#' '#' 36 ++
             loopLeft 36 "01,.@#" ++
             -- now start actuall processing things
             goRight 36 'a' 'a' 37 ++
             goRight 36 'b' 'b' 38 ++
-            loopRight 37 "01,.#" ++
-            loopRight 38 "01,.#" ++
+            loopRight 37 "01,.#@" ++
+            loopRight 38 "01,.#@" ++
             goRight 37 'a' 'a' 39 ++
             goRight 37 'b' 'b' 39 ++
             goRight 38 'a' 'a' 40 ++
@@ -184,13 +181,24 @@ el_utm =
             loopRight 41 "01" ++
             loopRight 42 "01" ++
             goRight 41 'a' '0' 43 ++
-            goRight 41 'b' '1' 43 ++
+            goRight 41 'b' '1' 26 ++ -- bit doesn't match, put it back and go back
+            
+            -- need to flip the next bit
             goRight 43 '0' 'a' 44 ++
-            goRight 42 'a' '0' 45 ++
-            goRight 42 'b' '1' 45 ++
-            goRight 45 '1' 'b' 44 ++
-            goRight 43 '1' '1' 26 ++ 
-            goRight 45 '0' '0' 26 ++
+            goRight 43 '1' 'b' 44 ++
+            goRight 43 ',' ',' 60 ++
+            loopLeft 60 "10.,@ab" ++
+            goLeft 60 '#' '#' 61 ++
+            loopLeft 61 "10.,@" ++
+            goRight 61 'a' '0' 70 ++
+            goRight 61 'b' '1' 70 ++
+            loopRight 70 "10" ++
+            goRight 70 '.' '.' 200 ++
+
+            goRight 42 'a' '0' 26 ++ -- bit doesn't match, put it back and go back
+            goRight 42 'b' '1' 43 ++
+
+            -- !?!?!?!?!?!? wrong or redundant
             loopLeft 44 "ab01@,." ++
             goLeft 44 '#' '#' 46 ++
             loopLeft 46 "01#,." ++
@@ -198,39 +206,38 @@ el_utm =
             goRight 46 'b' '1' 47 ++ 
             goRight 47 '0' 'a' 37 ++
             goRight 47 '1' 'b' 38 ++
-            goRight 47 '.' '.' 1000 
+            goRight 47 '.' '.' 200 ++ 
             ---- END CHECK INPUT CHARACTER
 
 
             ---- BEGIN WRITE NEW CHARACTER TO TAPE
-            loopRight 42 "01" ++ -- skip over goLeft, goRight instruction for now
-            goRight 42 '.' '.' 43 ++
-            loopRight 43 "01" ++ -- skip over new state for now
-            goRight 43 '.' '.' 44 ++ -- now at the beginning of the character to be written
+            loopRight 200 "01" ++ -- skip over goLeft, goRight instruction for now
+            goRight 200 '.' '.' 201 ++
+            loopRight 201 "01" ++ -- skip over new state for now
+            goRight 201 '.' '.' 202 ++ -- now at the beginning of the character to be written
             -- begin write character subroutine
-            goRight 44 '0' 'a' 45 ++
-            goRight 44 '1' 'b' 47 ++ -- mark character to be written
-            goRight 44 '.' '.' 54 ++ -- done writing input, move on to next part 
-            loopRight 45 "01.,#" ++
-            loopRight 47 "01.,#" ++
-            goRight 45 'a' 'a' 48 ++
-            goRight 45 'b' 'b' 48 ++
-            goRight 47 'a' 'a' 49 ++
-            goRight 47 'b' 'b' 49 ++
-            loopRight 48 "ab@." ++
-            loopRight 49 "ab@." ++
-            goRight 50 '0' 'a' 52 ++
-            goRight 50 '1' 'a' 52 ++
-            goRight 51 '0' 'b' 52 ++
-            goRight 51 '1' 'b' 52 ++
-            loopLeft 52 "ab@.01" ++
-            goLeft 52 '#' '#' 53 ++
-            loopLeft 53 "01#,." ++
-            goLeft 53 'a' '0' 44 ++ 
-            goLeft 53 'b' '1' 44
+            goRight 202 '0' 'a' 203 ++
+            goRight 202 '1' 'b' 204 ++ -- mark character to be written
+            goRight 202 '.' '.' 205 ++ -- done writing input, move on to next part 
+            loopRight 203 "01.,#@" ++
+            loopRight 204 "01.,#@" ++
+            goRight 203 'a' 'a' 206 ++
+            goRight 203 'b' 'b' 206 ++
+            goRight 204 'a' 'a' 207 ++
+            goRight 204 'b' 'b' 207 ++
+            loopRight 206 "ab@." ++
+            loopRight 207 "ab@." ++
+            goRight 206 '0' 'a' 209 ++
+            goRight 206 '1' 'a' 209 ++
+            goRight 207 '0' 'b' 209 ++
+            goRight 207 '1' 'b' 209 ++
+            loopLeft 209 "ab@.01," ++
+            goLeft 209 '#' '#' 211 ++
+            loopLeft 211 "01#,." ++
+            goRight 211 'a' '0' 202 ++ 
+            goRight 211 'b' '1' 202
 
            
--}
 
 
 
