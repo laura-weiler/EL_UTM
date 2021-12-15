@@ -1,0 +1,3 @@
+need: finish debugging
+      implement move according to transition function
+      implement write new state to tape

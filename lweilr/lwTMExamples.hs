@@ -20,7 +20,7 @@ tripletm =
             goRight 5 '!' '!' 1 
 
 el_utm =
-  TM [0 .. 1000] "01?,#." "01?,#.ab@" id ' ' '?' trans 1 [100]
+  TM [0 .. 1000] "01?,#." "01?,#.abcd@" id ' ' '?' trans 1 [1000]
   where
     trans = goRight 0 '?' '?' 1 ++
             ---- BEGIN WRITING THE START STATE TO THE LEFT OF THE FIRST INPUT BIT
@@ -52,11 +52,22 @@ el_utm =
             goRight 6 '0' 'a' 11 ++
             goRight 6 '1' 'b' 12 ++
             goRight 6 '#' '#' 19 ++ -- move on to next algorithm
-            loopRight 11 "01,.@#" ++
-            loopRight 12 "01,.@#" ++
+            loopRight 11 "01cd,.#" ++
+            loopRight 12 "01cd,.#" ++
+            goRight 11 '@' '@' 100 ++
+            goRight 12 '@' '@' 101 ++
+            loopRight 100 "@.01" ++
+            loopRight 101 "@.01" ++
+            goRight 100 ',' ',' 102 ++
+            goRight 101 ',' ',' 103 ++
+            loopRight 102 "01cd,.#" ++
+            loopRight 103 "01cd,.#" ++
             -- should now be at beginning of current state
-            goRight 11 'a' '0' 13 ++
-            goRight 12 'b' '1' 14 ++ -- saw the correct bit
+            goRight 102 'a' 'c' 13 ++
+            goRight 103 'b' 'd' 14 ++ -- saw the correct bit
+            goRight 102 '@' '@' 15 ++
+            goRight 103 '@' '@' 15 ++
+            -- or move on if @
             -- else, go back and check next state
             goRight 11 'b' 'b' 15 ++
             goRight 12 'a' 'a' 15 ++
@@ -68,14 +79,14 @@ el_utm =
             loopRight 17 "01" ++
             goRight 17 ',' ',' 6 ++
             -- if no next state, move on to next algorithm
-            loopLeft 13 "01,.@ab" ++ -- back to saw the correct bit
-            loopLeft 14 "01,.@ab" ++
+            loopLeft 13 "01,.@abcd" ++ -- back to saw the correct bit
+            loopLeft 14 "01,.@abcd" ++
             goLeft 13 '#' '#' 18 ++
             goLeft 14 '#' '#' 18 ++
             loopLeft 18 "01,.@#" ++
             goRight 18 'a' '0' 6 ++
             goRight 18 'b' '1' 6 ++
-            goRight 18 ',' ',' 100  -- final state matches current state
+            goRight 18 ',' ',' 1000  -- final state matches current state
             ---- END CHECK FINAL STATES
 {-
             ---- BEGIN CHECK TRANSITION STATE
