@@ -5,7 +5,7 @@ import UniversalTM
 
 -- following suggestion by Junnan in class
 tripletm =
-  TM [1 .. 6] "abc" "abc*! " id ' ' '!' trans 1 [5, 6, 1]
+  TM [1 .. 6] "abc" "abc*! " id ' ' '!' trans 6 [5, 6, 1]
   where
     trans = goRight 1 ' ' ' ' 6 ++
             loopRight 1 "*" ++
@@ -67,6 +67,12 @@ el_utm =
             goRight 103 'b' 'd' 14 ++ -- saw the correct bit
             goRight 102 '@' '@' 15 ++
             goRight 103 '@' '@' 15 ++
+
+
+            -- when it saw not correct bit
+            goRight 102 'b' 'b' 15 ++
+            goRight 103 'a' 'a' 15 ++
+
             -- or move on if @
             -- else, go back and check next state
             goRight 11 'b' 'b' 15 ++
@@ -88,7 +94,6 @@ el_utm =
             goRight 18 'b' '1' 6 ++
             goRight 18 ',' ',' 1000  -- final state matches current state
             ---- END CHECK FINAL STATES
-
 
 {-
             ---- BEGIN CHECK TRANSITION STATE
