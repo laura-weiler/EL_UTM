@@ -29,7 +29,6 @@ el_utm =
             goRight 1 '#' '#' 6 ++ -- finished processing input state, go to NEXT ROUTINE
             loopRight 2 "01,.#ab" ++  -- loop over everything to the start of the input string (from path a)
             loopRight 3 "01,.#ab" ++  -- loop over everything to the start of the input string (from path b)
-            -- Dec 13th changed this from 0, 1 to a, b for possible convenience with next part of algorithm
             goRight 2 '@' 'a' 4 ++  -- write the first bit of the start state (from path a)
             goRight 3 '@' 'b' 4 ++  -- write the first bit of the start state (from path b)
             loopLeft 4 "01,.@ba#" ++  -- go back to the beginning of the tape
@@ -103,49 +102,55 @@ el_utm =
             goRight 24 'b' '1' 17 ++ -- case for more state bits to process
             ---- END CHECK TRANSITION STATE
 
+
             ---- BEGIN CHECK INPUT CHARACTER
             goRight 28 '0' 'a' 29 ++
-            goRight 28 '1' 'b' 30 ++
-            goRight 28 '.' '.' 42 ++ -- end of input character, go to next part of the algorithm
+            goRight 28 '1' 'b' 29 ++
+            -- go mark the transition function bit
             loopRight 29 "01,.#" ++
-            loopRight 30 "01,.#" ++
-            goRight 29 'a' 'a' 31 ++
-            goRight 29 'b' 'b' 31 ++
-            goRight 30 'a' 'a' 32 ++
-            goRight 30 'b' 'b' 32 ++
-            loopRight 31 "@ab" ++
-            loopRight 32 "@ab" ++            
-            goRight 31 '.' '.' 33 ++
-            goRight 32 '.' '.' 34 ++
-            loopRight 33 "01" ++
-            loopRight 34 "01" ++
-            -- case for if the first letter hasn't been marked yet
-            goLeft 33 ',' ',' 38 ++ -- if end of input found, go back to mark the first character
-            goLeft 34 ',' ',' 39 ++
-            loopLeft 38 "01" ++
-            loopLeft 39 "01" ++
-            goRight 38 '.' '.' 40 ++
-            goRight 39 '.' '.' 41 ++
-            goRight 40 '0' 'a' 35 ++ -- match
-            goRight 41 '1' 'b' 35 ++
-            goRight 40 '1' '1' 25 ++ -- no match
-            goRight 41 '0' '0' 25 ++
-            -- end case
-            goRight 33 'a' '0' 37 ++ -- put the previously checked bit back
-            goRight 33 'b' '1' 37 ++ -- put the previously checked bit back
-            goRight 34 'a' '0' 38 ++
-            goRight 34 'b' '1' 38 ++
-            goRight 37 '0' 'a' 35 ++ -- found match
-            goRight 38 '1' 'b' 35 ++ -- found match
-            goRight 37 '1' '1' 25 ++ --didn't find match, go back to check next transition
-            goRight 38 '0' '0' 25 ++ --didn't find match, go back to check next transition
-            loopLeft 35 "01,.@ab" ++
-            goLeft 35 '#' '#' 36 ++
-            loopLeft 36 "01,.#" ++
-            goRight 36 'a' '0' 28 ++
-            goRight 36 'b' '1' 28 ++
+            goRight 29 'a' 'a' 30 ++
+            goRight 29 'b' 'b' 30 ++
+            loopRight 30 "@ab" ++
+            goRight 30 '.' '.' 31 ++
+            goRight 31 '0' 'a' 32 ++
+            goRight 31 '1' 'b' 32 ++
+            loopLeft 32 "ab.01," ++
+            goLeft 32 '#' '#' 33 ++
+            loopLeft 33 "01,.@#" ++
+            -- now start actuall processing things
+            goRight 33 'a' 'a' 34 ++
+            goRight 33 'b' 'b' 35 ++
+            loopRight 34 "01,.#" ++
+            loopRight 35 "01,.#" ++
+            goRight 34 'a' 'a' 36 ++
+            goRight 34 'b' 'b' 36 ++
+            goRight 35 'a' 'a' 37 ++
+            goRight 35 'b' 'b' 37 ++
+            loopRight 36 "@ab" ++
+            loopRight 37 "@ab" ++
+            goRight 36 '.' '.' 38 ++
+            goRight 37 '.' '.' 39 ++
+            loopRight 38 "01" ++
+            loopRight 39 "01" ++
+            goRight 38 'a' '0' 40 ++
+            goRight 38 'b' '1' 40 ++
+            goRight 40 '0' 'a' 41 ++
+            goRight 39 'a' '0' 42 ++
+            goRight 39 'b' '1' 42 ++
+            goRight 42 '1' 'b' 41 ++
+            goRight 40 '1' '1' 25 ++ 
+            goRight 42 '0' '0' 25 ++
+            loopLeft 41 "ab01@,." ++
+            goLeft 41 '#' '#' 43 ++
+            loopLeft 43 "01#,." ++
+            goRight 43 'a' '0' 44 ++
+            goRight 43 'b' '1' 44 ++ 
+            goRight 44 '0' 'a' 34 ++
+            goRight 44 '1' 'b' 35 ++
+            goRight 44 '.' '.' 1000 
             ---- END CHECK INPUT CHARACTER
 
+{-
             ---- BEGIN WRITE NEW CHARACTER TO TAPE
             loopRight 42 "01" ++ -- skip over goLeft, goRight instruction for now
             goRight 42 '.' '.' 43 ++
@@ -172,7 +177,7 @@ el_utm =
             loopLeft 53 "01#,." ++
             goLeft 53 'a' '0' 44 ++ 
             goLeft 53 'b' '1' 44
-
+-}
            
 
 
