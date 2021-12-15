@@ -20,15 +20,21 @@ tripletm =
             goRight 5 '!' '!' 1 
 
 el_utm =
-  TM [0 .. 100] "01?,#." "01?,#.ab@" id ' ' '?' trans 1 [100]
+  TM [0 .. 1000] "01?,#." "01?,#.ab@" id ' ' '?' trans 1 [100]
   where
     trans = goRight 0 '?' '?' 1 ++
             ---- BEGIN WRITING THE START STATE TO THE LEFT OF THE FIRST INPUT BIT
             goRight 1 '0' 'a' 2 ++  -- case where encoded input state starts with 0
             goRight 1 '1' 'b' 3 ++  -- case where encoded input state starts with 1
             goRight 1 '#' '#' 6 ++ -- finished processing input state, go to NEXT ROUTINE
-            loopRight 2 "01,.#ab" ++  -- loop over everything to the start of the input string (from path a)
-            loopRight 3 "01,.#ab" ++  -- loop over everything to the start of the input string (from path b)
+            loopRight 2 "01.,#ab" ++  -- loop over everything to the start of the input string (from path a)
+            loopRight 3 "01.,#ab" ++  -- loop over everything to the start of the input string (from path b)
+            goRight 2 '@' '@' 400 ++
+            goRight 3 '@' '@' 500 ++
+            loopRight 400 "@.01" ++
+            loopRight 500 "@.01" ++
+            goRight 400 ',' ',' 2 ++
+            goRight 500 ',' ',' 3 ++
             goRight 2 '@' 'a' 4 ++  -- write the first bit of the start state (from path a)
             goRight 3 '@' 'b' 4 ++  -- write the first bit of the start state (from path b)
             loopLeft 4 "01,.@ba#" ++  -- go back to the beginning of the tape
