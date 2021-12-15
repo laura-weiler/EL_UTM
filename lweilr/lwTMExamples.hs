@@ -268,22 +268,82 @@ el_utm =
             goRight 222 ',' ',' 223 ++
             loopLeft 223 "_,ab@.01" ++
             goLeft 223 '#' '#' 224 ++
-            loopLeft 224 "01#,."
+            loopLeft 224 "01#,." ++ 
 
+            -- finished updating the character, go back to the goLeft, goRight instruction
+            goLeft 224 'a' 'a' 225 ++ -- HERE !#!R# should this be 'a' '0' or 'a' 'a' ?
+            goLeft 224 'b' 'b' 226 ++ -- HERE !FWE!;LFM2
+            loopRight 225 "01,.@_" ++ --path for goRight
+            loopRight 226 "01,.@_" ++ --path for goLeft
+            goRight 225 '#' '#' 227 ++
+            goRight 226 '#' '#' 228 ++
+            loopRight 227 "01@_,." ++
+            loopRight 228 "01@_,." ++
+            goRight 227 'a' '0' 229 ++
+            goRight 227 'b' '1' 229 ++
+            goRight 228 'a' '0' 230 ++
+            goRight 228 'b' '1' 230 ++
+            loopRight 229 "01@_." ++
+            loopRight 230 "01@_." ++
+            goRight 229 'a' '0' 229 ++
+            goRight 229 'b' '1' 229 ++
+            goRight 230 'a' '0' 230 ++
+            goRight 230 'b' '1' 230 ++
+            goRight 229 ',' ',' 231 ++ -- path for goRight
+            goRight 230 ',' ',' 232 ++ -- path for goLeft
             
-
-
-
-
-            -- end write character subroutine
-            ---- END WRITE NEW CHARACTER TO TAPE
-
-
-
-
-
-
-
+            -- finished putting as and bs back, now go right or left to write new current state
+            goRight 231 '@' 'w' 233 ++ -- case for a
+            loopLeft 232 "01._@" ++ -- case for b
+            goLeft 232 ',' ',' 234 ++
+            loopLeft 234 "01ab@_." ++
+            goRight 234 ',' ',' 235 ++
+            goRight 235 '@' 'w' 233 ++
+            goRight 235 '0' 'w' 233 ++
+            goRight 235 '1' 'w' 233 ++
+            -- now go back to current state in transition function from 233
+            loopLeft 233 "01,#._w@" ++
+            goRight 233 'a' '0' 236 ++
+            goRight 233 'b' '1' 236 ++
+            goRight 236 '.' '.' 237 ++
+            -- now begin writing current state to reserved spot at w
+            goRight 237 '0' 'a' 238 ++
+            goRight 237 '1' 'b' 239 ++
+            loopRight 238 "01_@#,." ++
+            loopRight 239 "01_@#,." ++
+            goLeft 238 'w' 'a' 240 ++
+            goLeft 239 'w' 'b' 240 ++
+            loopLeft 240 "01_@#.,ab" ++
+            goRight 240 'a' '0' 241 ++
+            goRight 240 'b' '1' 241 ++
+            goRight 241 '0' 'a' 242 ++
+            goRight 241 '1' 'b' 243 ++
+            goRight 241 '.' '.' 246 ++ -- finished processing, but need to go put any leftover 0s and 1s to @s
+            --
+            loopRight 246 "01_@#,." ++
+            goRight 246 'a' 'a' 247 ++
+            goRight 246 'b' 'b' 247 ++
+            loopRight 247 "ab" ++
+            goRight 247 '1' '@' 247 ++
+            goRight 247 '0' '@' 247 ++
+            goRight 247 '.' '.' 248 ++ -- now actually done
+            loopLeft 248 "01ab@_,." ++
+            goRight 248 '?' '?' 249 ++
+            loopRight 249 "01" ++
+            goRight 249 '#' '#' 6 ++ -- go back to check final states
+            --
+            loopRight 242 "01_@#,." ++
+            loopRight 243 "01_@#,." ++
+            goRight 242 'a' 'a' 244 ++
+            goRight 242 'b' 'b' 244 ++
+            goRight 243 'a' 'a' 245 ++
+            goRight 243 'b' 'b' 245 ++
+            goRight 244 '@' 'a' 240 ++
+            goRight 244 '0' 'a' 240 ++
+            goRight 244 '1' 'a' 240 ++
+            goRight 245 '@' 'b' 240 ++
+            goRight 245 '0' 'b' 240 ++
+            goRight 245 '1' 'b' 240
 
 
 
