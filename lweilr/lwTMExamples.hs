@@ -313,7 +313,7 @@ el_utm =
             loopRight 239 "01_@#,." ++
             goLeft 238 'w' 'a' 240 ++
             goLeft 239 'w' 'b' 240 ++
-            loopLeft 240 "01_@#.,ab" ++
+            loopLeft 240 "01_@#.," ++ -- sfsflnskf removed ab
             goRight 240 'a' '0' 241 ++
             goRight 240 'b' '1' 241 ++
             goRight 241 '0' 'a' 242 ++
