@@ -211,14 +211,19 @@ el_utm =
 
 
             ---- BEGIN WRITE NEW CHARACTER TO TAPE
-            loopRight 200 "01" ++ -- skip over goLeft, goRight instruction for now
-            goRight 200 '.' '.' 201 ++
+            
+            -- loopRight 200 "01" ++ -- skip over goLeft, goRight instruction for now
+            -- instead of looping, mark GoLeft(1) -> b, GoRight(0) -> a
+            goRight 200 '1' 'b' 230 ++
+            goRight 200 '0' 'a' 230 ++
+
+            goRight 230 '.' '.' 201 ++
             loopRight 201 "01" ++ -- skip over new state for now
             goRight 201 '.' '.' 202 ++ -- now at the beginning of the character to be written
             -- begin write character subroutine
             goRight 202 '0' 'a' 203 ++
             goRight 202 '1' 'b' 204 ++ -- mark character to be written
-            goRight 202 '.' '.' 205 ++ -- done writing input, move on to next part 
+            goRight 202 '.' '.' 205 ++ -- done writing input, move on to next part
             loopRight 203 "01.,#@" ++
             loopRight 204 "01.,#@" ++
             goRight 203 'a' 'a' 206 ++
@@ -235,9 +240,37 @@ el_utm =
             goLeft 209 '#' '#' 211 ++
             loopLeft 211 "01#,." ++
             goRight 211 'a' '0' 202 ++ 
-            goRight 211 'b' '1' 202
+            goRight 211 'b' '1' 202 ++
 
-           
+
+            -- change remaining bits to ','
+            loopRight 205 "01,." ++
+            goRight 205 '#' '#' 220 ++
+            -- we shouldn't always skip the first input (@@@ + leftend)
+            -- because we'll have to update here as well eventually
+            -- so I'm looking for the case when we met a/b
+            -- + when it has been updated with GoRight GoLeft ... doesn't make any difference on the place we should find? (?)
+            -- loop until you find a or b (possible current state)
+            loopRight 220 "@01.," ++
+            goRight 220 'a' 'a' 221 ++
+            goRight 220 'b' 'b' 221 ++
+            -- loop until you get to the input character
+            -- the place that you just updated 
+            loopRight 221 "ab@" ++
+            goRight 221 '.' '.' 222 ++
+            -- loop until you find 0 or 1 before ','
+            -- replace remaining bit (0/1) to '_'
+            -- because we should use ',' as stopping point
+            loopRight 222 "ab_" ++
+            goRight 222 '1' '_' 222 ++
+            goRight 222 '0' '_' 222 ++
+            -- if you see ',' need to go back to transition and check direction bit
+            goRight 222 ',' ',' 223 ++
+            loopLeft 223 "_,ab@.01" ++
+            goLeft 223 '#' '#' 224 ++
+            loopLeft 224 "01#,."
+
+            
 
 
 
