@@ -98,7 +98,7 @@ el_utm =
             ---- END CHECK FINAL STATES
 
             -- putting back c,d to a,b
-            loopRight 110 "01,.@#" ++
+            loopRight 110 "01,.@#_" ++
             goRight 110 'c' 'a' 111 ++
             goRight 110 'd' 'b' 111 ++
             goRight 110 'a' 'a' 111 ++
@@ -111,7 +111,7 @@ el_utm =
             
             goRight 111 '@' '@' 121 ++ 
             goRight 111 '.' '.' 121 ++
-            loopLeft 121 "01,.@#ab" ++
+            loopLeft 121 "01,.@#ab_" ++
             goRight 121 '?' '?' 123 ++
             loopRight 123 "01," ++
             goRight 123 '#' '#' 122 ++
@@ -126,14 +126,16 @@ el_utm =
             goRight 20 '0' 'a' 21 ++
             goRight 20 '1' 'b' 22 ++
             goRight 20 '.' '.' 31 ++ --23 ++
-            loopRight 21 "01,.@#" ++
-            loopRight 22 "01,.@#" ++
-            goRight 21 'a' 'a' 24 ++ -- found a match
-            goRight 22 'b' 'b' 25 ++ -- found a match
+            loopRight 21 "01,.@_cd#" ++
+            loopRight 22 "01,.@_cd#" ++
+
+            goRight 21 'a' 'c' 24 ++ -- found a match
+            goRight 22 'b' 'd' 25 ++ -- found a match
+            
             -- if no match
             goRight 21 'b' 'b' 26 ++ -- wrong character, need to go back to check next transition
             goRight 22 'a' 'a' 26 ++ -- wrong character, ""
-            loopLeft 26 "01,.@ab" ++
+            loopLeft 26 "01,.@ab_" ++
             goLeft 26 '#' '#' 27 ++
             loopLeft 27 "01,.@#" ++
             goRight 27 'a' '0' 28 ++ -- put the bit back
@@ -141,8 +143,8 @@ el_utm =
             loopRight 28 "01." ++ -- go to comma
             goRight 28 ',' ',' 20 ++ -- start over with next transition
             -- back to case where there was a match
-            loopLeft 24 "01,.@ab" ++
-            loopLeft 25 "01,.@ab" ++
+            loopLeft 24 "01,.@ab_" ++
+            loopLeft 25 "01,.@ab_" ++
             goLeft 24 '#' '#' 29 ++
             goLeft 25 '#' '#' 30 ++
             loopLeft 29 "01,.@#" ++
@@ -313,21 +315,26 @@ el_utm =
             loopRight 239 "01_@#,." ++
             goLeft 238 'w' 'a' 240 ++
             goLeft 239 'w' 'b' 240 ++
-            loopLeft 240 "01_@#.," ++ -- sfsflnskf removed ab
-            goRight 240 'a' '0' 241 ++
-            goRight 240 'b' '1' 241 ++
+            loopLeft 240 "01_@ab.," ++ -- sfsflnskf removed ab
+            goLeft 240 '#' '#' 300 ++
+            loopLeft 300 "01,.#" ++
+            goRight 300 'a' '0' 241 ++
+            goRight 300 'b' '1' 241 ++
             goRight 241 '0' 'a' 242 ++
             goRight 241 '1' 'b' 243 ++
+            --goLeft 241 '@' '@' 300 ++
+            --goLeft 300 '1' 'b' 246 ++
+            --goLeft 300 '0' 'a' 246 ++ 
             goRight 241 '.' '.' 246 ++ -- finished processing, but need to go put any leftover 0s and 1s to @s
             --
             loopRight 246 "01_@#,." ++
             goRight 246 'a' 'a' 247 ++
             goRight 246 'b' 'b' 247 ++
-            loopRight 247 "ab" ++
+            loopRight 247 "ab@" ++ -- ??
             goRight 247 '1' '@' 247 ++
             goRight 247 '0' '@' 247 ++
             goRight 247 '.' '.' 248 ++ -- now actually done
-            loopLeft 248 "01ab@_,." ++
+            loopLeft 248 "01ab@_,.#" ++
             goRight 248 '?' '?' 249 ++
             loopRight 249 "01" ++
             goRight 249 '#' '#' 6 ++ -- go back to check final states
