@@ -125,27 +125,7 @@ el_utm =
             goRight 19 '#' '#' 20 ++    
             goRight 20 '0' 'a' 21 ++
             goRight 20 '1' 'b' 22 ++
-            --
-            --loopRight 700 "ab,.01@_" ++
-            --goRight 700 '#' '#' 701 ++
-            --loopRight 701 "ab,.01@_" ++
-            --goRight 701 'c' 'c' 702 ++
-            --goRight 701 'd' 'd' 702 ++
-            --goLeft 701 '#' '#' 703 ++
-            --loopLeft 702 "cdab01@" ++ 
-            --goRight 702 ',' ',' 704 ++
-            --loopRight 704 "ab@" ++ 
-            --goRight 704 'c' 'a' 704 ++
-            --goRight 704 'd' 'b' 704 ++         
-            --goRight 704 '.' '.' 703 ++
-            --loopLeft 703 ",.01ab@_" ++
-            --goLeft 703 '#' '#' 705 ++
-            --loopLeft 705 "01,.#" ++
-            --goRight 705 'a' 'a' 21 ++
-            --goRight 705 'b' 'b' 22 ++
-            --
-            --
-            goRight 20 '.' 'w' 604 ++ --31 ++
+            goRight 20 '.' 'w' 604 ++
             loopRight 604 "ab,.01@_" ++
             goRight 604 '#' '#' 605 ++
             loopRight 605 "ab,.01@_" ++
@@ -167,9 +147,17 @@ el_utm =
             goRight 22 'b' 'd' 25 ++ -- found a match
              
             -- if no match
-            goRight 21 'b' 'b' 26 ++ -- wrong character, need to go back to check next transition
-            goRight 22 'a' 'a' 26 ++ -- wrong character, ""
-            loopLeft 26 "01,.@ab_" ++ -- CHECK THIS
+            goRight 21 'b' 'b' 800 ++ -- wrong character, need to go back to check next transition
+            goRight 22 'a' 'a' 800 ++ -- wrong character, ""
+            -- need to put c or d bits back before returning
+            loopLeft 800 "abcd" ++
+            goRight 800 ',' ',' 801 ++ 
+            loopRight 801 "ab@" ++
+            goRight 801 'c' 'a' 801 ++
+            goRight 801 'd' 'b' 801 ++
+            goRight 801 '.' '.' 26 ++
+            --
+            loopLeft 26 "01,.@abcd_" ++ -- CHECK THIS
             goLeft 26 '#' '#' 27 ++
             loopLeft 27 "01,.@#" ++
             goRight 27 'a' '0' 28 ++ -- put the bit back
@@ -222,7 +210,8 @@ el_utm =
             -- need to flip the next bit
             goRight 43 '0' 'a' 44 ++
             goRight 43 '1' 'b' 44 ++
-            goRight 43 ',' ',' 60 ++
+            goRight 43 '_' '_' 60 ++ -- ??
+            goRight 43 ',' ',' 60 ++ -- ??
             loopLeft 60 "10.,@ab_" ++
             goLeft 60 '#' '#' 61 ++
             loopLeft 61 "10.,@" ++
@@ -326,11 +315,11 @@ el_utm =
             goRight 230 'a' '0' 230 ++
             goRight 230 'b' '1' 230 ++
             goRight 229 ',' ',' 231 ++ -- path for goRight
-            goRight 230 ',' ',' 232 ++ -- path for goLeft
+            goLeft 230 ',' ',' 232 ++ -- path for goLeft
             
             -- finished putting as and bs back, now go right or left to write new current state
             goRight 231 '@' 'w' 233 ++ -- case for a
-            loopLeft 232 "01._@" ++ -- case for b
+            loopLeft 232 "01ab._@#" ++ -- case for b
             goLeft 232 ',' ',' 234 ++
             loopLeft 234 "01ab@_." ++
             goRight 234 ',' ',' 235 ++
@@ -356,9 +345,6 @@ el_utm =
             goRight 300 'b' '1' 241 ++
             goRight 241 '0' 'a' 242 ++
             goRight 241 '1' 'b' 243 ++
-            --goLeft 241 '@' '@' 300 ++
-            --goLeft 300 '1' 'b' 246 ++
-            --goLeft 300 '0' 'a' 246 ++ 
             goRight 241 '.' '.' 246 ++ -- finished processing, but need to go put any leftover 0s and 1s to @s
             --
             loopRight 246 "01_@#,." ++
