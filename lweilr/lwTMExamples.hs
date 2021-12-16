@@ -123,15 +123,43 @@ el_utm =
             -- currently at beginning of transition functions, move forward to current state
             loopLeft 19 "ab,.01@" ++ -- looping left to be lazy, because it ended after first bit of the trans functions
             goRight 19 '#' '#' 20 ++    
-            goRight 20 '0' 'a' 21 ++
-            goRight 20 '1' 'b' 22 ++
-            goRight 20 '.' '.' 31 ++ --23 ++
+            goRight 20 '0' 'a' 600 ++
+            goRight 20 '1' 'b' 600 ++
+            --
+            loopRight 600 "ab,.01@_" ++
+            goRight 600 '#' '#' 601 ++
+            goRight 601 'c' 'a' 601 ++
+            goRight 601 'd' 'b' 601 ++
+            goRight 601 '@' '@' 602 ++
+            goRight 601 '.' '.' 602 ++
+            goRight 601 '#' '#' 602 ++
+            loopLeft 602 ",.01ab@_" ++
+            goLeft 602 '#' '#' 603 ++
+            loopLeft 603 "01,.#" ++
+            goRight 603 'a' 'a' 21 ++
+            goRight 603 'b' 'b' 22 ++
+            --
+            goRight 20 '.' 'w' 604 ++ --31 ++
+            loopRight 604 "ab,.01@_" ++
+            goRight 604 '#' '#' 605 ++
+            loopRight 605 "ab,.01@_" ++
+            goRight 605 'c' 'c' 606 ++
+            goRight 605 'd' 'd' 606 ++
+            goRight 605 '#' '#' 609 ++
+            loopLeft 606 "cdab01@" ++
+            goRight 606 ',' ',' 607 ++
+            loopRight 607 "ab@" ++
+            goRight 607 'c' 'a' 607 ++
+            goRight 607 'd' 'b' 607 ++
+            goRight 607 '.' '.' 609 ++
+            loopLeft 609 ",.01ab@_#" ++
+            goRight 609 'w' '.' 31 ++
+            --
             loopRight 21 "01,.@_cd#" ++
             loopRight 22 "01,.@_cd#" ++
-
             goRight 21 'a' 'c' 24 ++ -- found a match
             goRight 22 'b' 'd' 25 ++ -- found a match
-            
+             
             -- if no match
             goRight 21 'b' 'b' 26 ++ -- wrong character, need to go back to check next transition
             goRight 22 'a' 'a' 26 ++ -- wrong character, ""
@@ -143,8 +171,8 @@ el_utm =
             loopRight 28 "01." ++ -- go to comma
             goRight 28 ',' ',' 20 ++ -- start over with next transition
             -- back to case where there was a match
-            loopLeft 24 "01,.@ab_" ++
-            loopLeft 25 "01,.@ab_" ++
+            loopLeft 24 "01,.@abcd_" ++
+            loopLeft 25 "01,.@abcd_" ++
             goLeft 24 '#' '#' 29 ++
             goLeft 25 '#' '#' 30 ++
             loopLeft 29 "01,.@#" ++
@@ -157,21 +185,21 @@ el_utm =
             goRight 31 '0' 'a' 32 ++
             goRight 31 '1' 'b' 32 ++
             -- go mark the transition function bit
-            loopRight 32 "01,.#@" ++
+            loopRight 32 "01,.#@_" ++ 
             goRight 32 'a' 'a' 33 ++
             goRight 32 'b' 'b' 33 ++
             loopRight 33 "@ab" ++
             goRight 33 '.' '.' 34 ++
             goRight 34 '0' 'a' 35 ++
             goRight 34 '1' 'b' 35 ++
-            loopLeft 35 "ab.01@," ++
+            loopLeft 35 "ab.01@,_" ++
             goLeft 35 '#' '#' 36 ++
             loopLeft 36 "01,.@#" ++
             -- now start actuall processing things
             goRight 36 'a' 'a' 37 ++
             goRight 36 'b' 'b' 38 ++
-            loopRight 37 "01,.#@" ++
-            loopRight 38 "01,.#@" ++
+            loopRight 37 "01,.#@_" ++
+            loopRight 38 "01,.#@_" ++
             goRight 37 'a' 'a' 39 ++
             goRight 37 'b' 'b' 39 ++
             goRight 38 'a' 'a' 40 ++
@@ -189,7 +217,7 @@ el_utm =
             goRight 43 '0' 'a' 44 ++
             goRight 43 '1' 'b' 44 ++
             goRight 43 ',' ',' 60 ++
-            loopLeft 60 "10.,@ab" ++
+            loopLeft 60 "10.,@ab_" ++
             goLeft 60 '#' '#' 61 ++
             loopLeft 61 "10.,@" ++
             goRight 61 'a' '0' 70 ++
@@ -201,7 +229,7 @@ el_utm =
             goRight 42 'b' '1' 43 ++
 
             -- !?!?!?!?!?!? wrong or redundant
-            loopLeft 44 "ab01@,." ++
+            loopLeft 44 "ab01@,._" ++
             goLeft 44 '#' '#' 46 ++
             loopLeft 46 "01#,." ++
             goRight 46 'a' '0' 47 ++
@@ -226,8 +254,8 @@ el_utm =
             goRight 202 '0' 'a' 203 ++
             goRight 202 '1' 'b' 204 ++ -- mark character to be written
             goRight 202 '.' '.' 205 ++ -- done writing input, move on to next part
-            loopRight 203 "01.,#@" ++
-            loopRight 204 "01.,#@" ++
+            loopRight 203 "01.,#@_" ++
+            loopRight 204 "01.,#@_" ++
             goRight 203 'a' 'a' 206 ++
             goRight 203 'b' 'b' 206 ++
             goRight 204 'a' 'a' 207 ++
@@ -238,7 +266,7 @@ el_utm =
             goRight 206 '1' 'a' 209 ++
             goRight 207 '0' 'b' 209 ++
             goRight 207 '1' 'b' 209 ++
-            loopLeft 209 "ab@.01," ++
+            loopLeft 209 "ab@.01,_" ++
             goLeft 209 '#' '#' 211 ++
             loopLeft 211 "01#,." ++
             goRight 211 'a' '0' 202 ++ 
@@ -253,7 +281,7 @@ el_utm =
             -- so I'm looking for the case when we met a/b
             -- + when it has been updated with GoRight GoLeft ... doesn't make any difference on the place we should find? (?)
             -- loop until you find a or b (possible current state)
-            loopRight 220 "@01.," ++
+            loopRight 220 "@01_.," ++
             goRight 220 'a' 'a' 221 ++
             goRight 220 'b' 'b' 221 ++
             -- loop until you get to the input character
@@ -270,7 +298,7 @@ el_utm =
             goRight 222 ',' ',' 223 ++
             loopLeft 223 "_,ab@.01" ++
             goLeft 223 '#' '#' 224 ++
-            loopLeft 224 "01#,." ++ 
+            loopLeft 224 "01#,._" ++ 
 
             -- finished updating the character, go back to the goLeft, goRight instruction
             goRight 224 'a' 'a' 225 ++ -- HERE !#!R# should this be 'a' '0' or 'a' 'a' ?
