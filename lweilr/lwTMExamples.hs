@@ -123,21 +123,27 @@ el_utm =
             -- currently at beginning of transition functions, move forward to current state
             loopLeft 19 "ab,.01@" ++ -- looping left to be lazy, because it ended after first bit of the trans functions
             goRight 19 '#' '#' 20 ++    
-            goRight 20 '0' 'a' 600 ++
-            goRight 20 '1' 'b' 600 ++
+            goRight 20 '0' 'a' 21 ++
+            goRight 20 '1' 'b' 22 ++
             --
-            loopRight 600 "ab,.01@_" ++
-            goRight 600 '#' '#' 601 ++
-            goRight 601 'c' 'a' 601 ++
-            goRight 601 'd' 'b' 601 ++
-            goRight 601 '@' '@' 602 ++
-            goRight 601 '.' '.' 602 ++
-            goRight 601 '#' '#' 602 ++
-            loopLeft 602 ",.01ab@_" ++
-            goLeft 602 '#' '#' 603 ++
-            loopLeft 603 "01,.#" ++
-            goRight 603 'a' 'a' 21 ++
-            goRight 603 'b' 'b' 22 ++
+            --loopRight 700 "ab,.01@_" ++
+            --goRight 700 '#' '#' 701 ++
+            --loopRight 701 "ab,.01@_" ++
+            --goRight 701 'c' 'c' 702 ++
+            --goRight 701 'd' 'd' 702 ++
+            --goLeft 701 '#' '#' 703 ++
+            --loopLeft 702 "cdab01@" ++ 
+            --goRight 702 ',' ',' 704 ++
+            --loopRight 704 "ab@" ++ 
+            --goRight 704 'c' 'a' 704 ++
+            --goRight 704 'd' 'b' 704 ++         
+            --goRight 704 '.' '.' 703 ++
+            --loopLeft 703 ",.01ab@_" ++
+            --goLeft 703 '#' '#' 705 ++
+            --loopLeft 705 "01,.#" ++
+            --goRight 705 'a' 'a' 21 ++
+            --goRight 705 'b' 'b' 22 ++
+            --
             --
             goRight 20 '.' 'w' 604 ++ --31 ++
             loopRight 604 "ab,.01@_" ++
@@ -163,7 +169,7 @@ el_utm =
             -- if no match
             goRight 21 'b' 'b' 26 ++ -- wrong character, need to go back to check next transition
             goRight 22 'a' 'a' 26 ++ -- wrong character, ""
-            loopLeft 26 "01,.@ab_" ++
+            loopLeft 26 "01,.@ab_" ++ -- CHECK THIS
             goLeft 26 '#' '#' 27 ++
             loopLeft 27 "01,.@#" ++
             goRight 27 'a' '0' 28 ++ -- put the bit back
@@ -373,9 +379,11 @@ el_utm =
             goRight 242 'b' 'b' 244 ++
             goRight 243 'a' 'a' 245 ++
             goRight 243 'b' 'b' 245 ++
+            loopRight 244 "ab" ++
             goRight 244 '@' 'a' 240 ++
             goRight 244 '0' 'a' 240 ++
             goRight 244 '1' 'a' 240 ++
+            loopRight 245 "ab" ++
             goRight 245 '@' 'b' 240 ++
             goRight 245 '0' 'b' 240 ++
             goRight 245 '1' 'b' 240
